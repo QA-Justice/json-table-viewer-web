@@ -6,7 +6,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import java.time.Duration;
 import static org.junit.Assert.*;
-
+import locators.PageLocators ;
 
 public class JsonTableSteps {
 
@@ -39,7 +39,7 @@ public class JsonTableSteps {
 
     @When("I click the Convert button")
     public void clickConvert() {
-        WebElement button = driver.findElement(By.xpath("//button[contains(text(), 'Convert')]"));
+        WebElement button = driver.findElement(By.xpath(PageLocators.CONVERT_BUTTON));
         button.click();
     }
 
