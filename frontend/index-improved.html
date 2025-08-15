@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON → Table Viewer</title>
+    <meta name="description" content="A web application that converts JSON data into a table.">
+    <link rel="stylesheet" href="style-improved.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <link rel="icon" type="image/png" href="./favicon-star.png">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1 style="font-weight: bold; font-size: 2em; font-family: 'Pretendard', sans-serif;">JSON → Table Viewer✨</h1>
+    </header>
+
+    <!-- Input Section -->
+    <div class="input-section">
+      <div class="textarea-container">
+        <button id="resetBtn" class="reset-btn" title="Reset to sample JSON">↺ Reset</button>
+        <textarea 
+          id="jsonInput" 
+          placeholder="Paste your JSON data here."
+          rows="12"
+          spellcheck="false"
+        ></textarea>
+      </div>
+      <div class="button-container">
+        <input type="file" id="jsonFileInput" accept=".json,application/json" style="display:none;" />
+        <button id="fileUploadBtn" class="main-btn">📁 Upload</button>
+        <button id="convertBtn" class="main-btn">✨Convert</button>
+        <button id="downloadExcelBtn" class="main-btn">📥 CSV</button>
+        <div class="dropdown-container">
+          <button id="copyToClipboardBtn" class="main-btn dropdown-trigger">📋 Copy ▼</button>
+          <div id="copyOptions" class="dropdown-menu">
+            <button class="dropdown-item" data-format="markdown">Markdown</button>
+            <button class="dropdown-item" data-format="text">Text</button>
+          </div>
+        </div>
+        <button id="pivotBtn" class="main-btn">🔄 Pivot</button>
+        <div class="keyboard-hint">
+          You can press Ctrl + F to search
+        </div>
+      </div>
+    </div>
+
+     <!-- Result Section -->
+    <section class="result-section">
+      <div id="tableContainer">
+        <div class="no-data-message">
+          <p>📭 No data to display.</p>
+          <p>Please paste JSON into the input area above.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="donate-container">
+    <a href="https://www.buymeacoffee.com/justice_tia" target="_blank" class="donate-btn">
+    ☕ Buy me a coffee 😋
+   </a>
+  </div>
+  </div>
+  <!-- Script -->
+  <script type="module" src="./js/script-improved.js"></script>
+  <script src="./js/search-content.js"></script>
+</html> 
