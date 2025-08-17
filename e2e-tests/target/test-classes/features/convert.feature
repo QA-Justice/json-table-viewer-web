@@ -2,7 +2,6 @@ Feature: JSON convert to table
 Background:
   Given I open the JSON viewer page
 
-  @runonly
   Scenario: A correct table should be rendered when sample.json is converted
     When I click the Convert button
     Then the table headers should be:
@@ -12,9 +11,13 @@ Background:
       | Jane Smith | 25 | jane@example.com | false | 90 | 88 | 95 | 456 Oak Ave | Los Angeles | 90210 |
       | Bob Johnson | 35 | bob@example.com | true | 75 | 82 | 88 | 789 Pine Rd | Chicago | 60601 |
 
- #@runonly
-#  Scenario: Convert other JSON files correctly
-#    When I import the file "arr_simple.json"
-#    And I click the Convert button
-#    Then all column names should match the keys in the JSON
-#    And each cell should match the corresponding JSON value
+  Scenario Outline: Convert JSON files correctly
+    When I import the file "<jsonFile>"
+    And I click the Convert button
+    Then all column names should match the expected headers for "<baseName>"
+    And each cell should match the expected table for "<baseName>"
+
+    Examples:
+      | jsonFile           | baseName      |
+      | object-rooted.json | object-rooted |
+      | array-rooted.json  | array-rooted |
