@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="82b65afe-cb50-436b-aaa4-0c5d39646c07" name="Changes" comment="test: add feature scenarios">
+    <list default="true" id="82b65afe-cb50-436b-aaa4-0c5d39646c07" name="Changes" comment="feat: add step definitions for table header and row validation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/features/convert.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/features/convert.feature" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/steps/JsonTableSteps.java" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/steps/JsonTableSteps.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/convert.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/convert.feature" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/locators/PageLocators.class" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/locators/PageLocators.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/steps/JsonTableSteps.class" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/steps/JsonTableSteps.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +28,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
@@ -56,10 +51,13 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "MavenSettings"
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\Tia\AppData\Roaming\Subversion</configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="82b65afe-cb50-436b-aaa4-0c5d39646c07" name="Changes" comment="" />
@@ -84,7 +82,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755432055169</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat: add step definitions for table header and row validation">
+      <option name="closed" value="true" />
+      <created>1755434421754</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1755434421754</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -100,6 +106,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test: add feature scenarios" />
-    <option name="LAST_COMMIT_MESSAGE" value="test: add feature scenarios" />
+    <MESSAGE value="feat: add step definitions for table header and row validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add step definitions for table header and row validation" />
   </component>
 </project>
