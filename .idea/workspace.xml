@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82b65afe-cb50-436b-aaa4-0c5d39646c07" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/locators/button-loactors.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/features/convert.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/features/copy.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/features/pivot.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/features/upload.feature" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/runner/TestRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/runner/TestRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/features/render-json.feature" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/locators/PageLocators.java" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/locators/PageLocators.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/steps/JsonTableSteps.java" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/steps/JsonTableSteps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/render-json.feature" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/locators/PageLocators.class" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/locators/PageLocators.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/runner/TestRunner.class" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/runner/TestRunner.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/steps/JsonTableSteps.class" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/steps/JsonTableSteps.class" afterDir="false" />
     </list>
@@ -39,21 +46,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Cucumber Java.Feature: render-json.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Tia/IdeaProjects/json-table-viewer-web",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "MavenSettings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Cucumber Java.Feature: render-json.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Tia/IdeaProjects/json-table-viewer-web&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

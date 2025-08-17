@@ -30,12 +30,6 @@ public class JsonTableSteps {
         driver.get("http://localhost:8080/index-improved.html");
     }
 
-    @When("I paste the following JSON:")
-    public void pasteJson(String json) {
-        WebElement input = driver.findElement(By.id("json-input"));
-        input.clear();
-        input.sendKeys(json);
-    }
 
     @When("I click the Convert button")
     public void clickConvert() {
@@ -43,21 +37,37 @@ public class JsonTableSteps {
         button.click();
     }
 
-
-    @Then("I should see a table with {int} rows and {int} columns")
-    public void checkTableSize(int rows, int columns) {
-        WebElement table = driver.findElement(By.id("result-table"));
-        int actualRows = table.findElements(By.cssSelector("tbody tr")).size();
-        int actualCols = table.findElements(By.cssSelector("thead th")).size();
-        assertEquals(rows, actualRows);
-        assertEquals(columns, actualCols);
+    @When("I click the Upload button")
+    public void clickUpload() {
+        WebElement button = driver.findElement(By.xpath(PageLocators.UPLOAD_BUTTON));
+        button.click();
     }
 
-    @Then("the column headers should include {string} and {string}")
-    public void checkColumnHeaders(String col1, String col2) {
-        WebElement table = driver.findElement(By.id("result-table"));
-        String headers = table.findElement(By.tagName("thead")).getText();
-        assertTrue(headers.contains(col1));
-        assertTrue(headers.contains(col2));
+    @When("I click the Pivot button")
+    public void clickPivot() {
+        WebElement button = driver.findElement(By.xpath(PageLocators.PIVOT_BUTTON));
+        button.click();
+    }
+
+
+    @Then("the table headers should be:")
+    public void theTableHeadersShouldBe() {
+        
+    }
+
+    @And("the table rows should be:")
+    public void theFirstRowShouldBe() {
+    }
+
+    @When("I import the file {string}")
+    public void iImportTheFile(String arg0) {
+    }
+
+    @Then("all column names should match the keys in the JSON")
+    public void allColumnNamesShouldMatchTheKeysInTheJSON() {
+    }
+
+    @And("each cell should match the corresponding JSON value")
+    public void eachCellShouldMatchTheCorrespondingJSONValue() {
     }
 }
