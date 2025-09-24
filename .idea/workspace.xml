@@ -4,23 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="82b65afe-cb50-436b-aaa4-0c5d39646c07" name="Changes" comment="feat: add step definitions for table header and row validation">
-      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/expected/array-rooted.table.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/expected/object-rooted.table.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/pivot.feature" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/upload.feature" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/json/array-rooted.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/json/object-rooted.json" afterDir="false" />
+    <list default="true" id="82b65afe-cb50-436b-aaa4-0c5d39646c07" name="Changes" comment="feat: edit step definitions for convert.feature">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/e2e-tests.iml" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/e2e-tests.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/features/convert.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/convert.feature" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/features/copy.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/expected/array-rooted.headers.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/features/pivot.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/expected/object-rooted.headers.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/features/upload.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/copy.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/locators/PageLocators.java" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/locators/PageLocators.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/runner/TestRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/runner/TestRunner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/java/steps/JsonTableSteps.java" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/java/steps/JsonTableSteps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/resources/expected/array-rooted.table.csv" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/expected/array-rooted.table.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/resources/expected/object-rooted.table.csv" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/expected/object-rooted.table.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/convert.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/convert.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/copy.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/copy.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/pivot.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/pivot.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/upload.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/src/test/resources/features/upload.feature" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/convert.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/convert.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/copy.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/copy.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/pivot.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/pivot.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/upload.feature" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/features/upload.feature" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/locators/PageLocators.class" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/locators/PageLocators.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/runner/TestRunner.class" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/runner/TestRunner.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e2e-tests/target/test-classes/steps/JsonTableSteps.class" beforeDir="false" afterPath="$PROJECT_DIR$/e2e-tests/target/test-classes/steps/JsonTableSteps.class" afterDir="false" />
@@ -56,24 +56,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Cucumber Java.Feature: convert.executor": "Debug",
-    "Cucumber Java.Feature: render-json.executor": "Run",
-    "Cucumber Java.Run only.executor": "Run",
-    "JUnit.Unnamed.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Tia/IdeaProjects/json-table-viewer-web",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Cucumber Java.Feature: convert.executor&quot;: &quot;Run&quot;,
+    &quot;Cucumber Java.Feature: render-json.executor&quot;: &quot;Run&quot;,
+    &quot;Cucumber Java.Run only.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Tia/IdeaProjects/json-table-viewer-web&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Tia\IdeaProjects\json-table-viewer-web\e2e-tests\src\test\resources\features" />
@@ -142,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755439742248</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat: edit step definitions for convert.feature">
+      <option name="closed" value="true" />
+      <created>1755446435059</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1755446435059</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -159,6 +167,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test: add feature scenarios" />
     <MESSAGE value="feat: add step definitions for table header and row validation" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add step definitions for table header and row validation" />
+    <MESSAGE value="feat: edit step definitions for convert.feature" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: edit step definitions for convert.feature" />
   </component>
 </project>
