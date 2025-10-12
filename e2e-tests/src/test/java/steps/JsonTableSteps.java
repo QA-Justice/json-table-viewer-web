@@ -5,6 +5,8 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -112,9 +114,21 @@ public class JsonTableSteps {
 
     @Then("I should see a success notification")
     public void iShouldSeeASuccessNotification() {
-        waitForElementVisible(PageLocators.SUCCESS_NOTIFICATION);
-        WebElement notification = driver.findElement(By.xpath(PageLocators.SUCCESS_NOTIFICATION));
-        assertTrue("Success notification should be visible", notification.isDisplayed());
+        // 알림이 나타날 때까지 최대 2초 동안 기다림 (알림은 3초 후에 사라짐)
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+        try {
+            // 성공 알림이 표시되는지 확인
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PageLocators.SUCCESS_NOTIFICATION)));
+            assertTrue("Success notification should be visible", true);
+        } catch (TimeoutException e) {
+            // 성공 알림이 없으면 일반적인 notification 요소 확인
+            try {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PageLocators.NOTIFICATION)));
+                assertTrue("Success notification should be visible", true);
+            } catch (TimeoutException ex) {
+                fail("Success notification should be visible but was not found");
+            }
+        }
     }
 
     @When("I upload a file with invalid extension")

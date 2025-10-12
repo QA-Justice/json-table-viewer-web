@@ -34,8 +34,8 @@ public class PageLocators {
     
     // 알림 메시지
     public static final String NOTIFICATION = "//div[contains(@class, 'notification')]";
-    public static final String SUCCESS_NOTIFICATION = "//div[contains(@class, 'notification-success')]";
-    public static final String ERROR_NOTIFICATION = "//div[contains(@class, 'notification-error')]";
+    public static final String SUCCESS_NOTIFICATION = "//div[contains(@class, 'notification') and contains(@class, 'notification-success')]";
+    public static final String ERROR_NOTIFICATION = "//div[contains(@class, 'notification') and contains(@class, 'notification-error')]";
     
     // 데이터 없음 메시지
     public static final String NO_DATA_MESSAGE = "//div[contains(@class, 'no-data-message')]";
