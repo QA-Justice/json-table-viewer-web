@@ -41,7 +41,7 @@ public class JsonTableSteps {
 
     @Given("I open the JSON viewer page")
     public void openJsonViewer() {
-        driver.get("http://localhost:8080/index-improved.html");
+        driver.get("https://qa-justice.github.io/json-table-viewer-web/");
     }
 
 

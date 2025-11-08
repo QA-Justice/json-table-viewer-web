@@ -1,4 +1,5 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "liveServer.settings.multiRootWorkspaceName": "json-table-viewer-web"
+    "liveServer.settings.multiRootWorkspaceName": "json-table-viewer-web",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

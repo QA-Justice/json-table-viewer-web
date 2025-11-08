@@ -11,7 +11,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>   <!-- Java 버전 17 기준 -->
+        <!-- Upgrade target Java version to 21 (latest LTS) -->
+        <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <cucumber.version>7.15.0</cucumber.version>
         <junit.version>4.13.2</junit.version>
@@ -62,6 +63,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
+                    <!-- Prefer using 'release' when targeting a specific Java platform where supported -->
+                    <release>17</release>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>

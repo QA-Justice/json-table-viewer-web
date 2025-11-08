@@ -2,7 +2,7 @@
 Background:
   Given I open the JSON viewer page
 
-#  @runonly
+  @runonly
   Scenario: A correct table should be rendered when sample.json is converted
     When I click the Convert button
     Then I should see a success notification
