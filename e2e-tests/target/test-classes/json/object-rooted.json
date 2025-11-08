@@ -1,0 +1,49 @@
+{
+  "user": {
+    "id": 1,
+    "name": "Alice",
+    "email": "alice@example.com",
+    "active": true,
+    "info": null,
+    "tags": ["admin", null, "__undefined__"],
+    "roles": ["editor", "manager"],
+    "profile": {
+      "age": 30,
+      "bio": "Team lead at HQ",
+      "location": {
+        "city": "New York",
+        "zip": "10001"
+      }
+    }
+  },
+  "meta": {
+    "description": null,
+    "createdAt": "2023-01-01T00:00:00Z",
+    "updatedAt": "2024-05-05T13:45:00Z",
+    "version": {
+      "major": 2,
+      "minor": 5,
+      "build": null
+    }
+  },
+  "scores": [95, 88, null],
+  "activityLog": [
+    {
+      "action": "login",
+      "timestamp": "2024-08-01T08:30:00Z"
+    },
+    {
+      "action": "update_profile",
+      "timestamp": null
+    }
+  ],
+  "flags": {
+    "betaUser": true,
+    "notifications": {
+      "email": false,
+      "sms": "__undefined__"
+    }
+  },
+  "emptyArray": [],
+  "emptyObject": {}
+}

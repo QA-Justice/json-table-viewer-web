@@ -1,0 +1,1 @@
+| id | user.name | user.email | user.profile.age | user.profile.location.city | user.profile.location.zip | user.profile.bio | roles[0] | roles[1] | roles[2] | preferences.newsletter | preferences.theme | metadata | tags | deletedAt | roles | metadata.createdBy | tags[0] | tags[1] | metadata.lastLogin |

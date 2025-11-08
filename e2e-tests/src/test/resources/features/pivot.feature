@@ -2,7 +2,7 @@ Feature: Pivot table functionality
 Background:
   Given I open the JSON viewer page
 
-  @runonly
+#  @runonly
   Scenario: Toggle pivot mode
     When I click the Convert button
     Then the Pivot button should show "Pivot"
@@ -14,11 +14,11 @@ Background:
     Then the Pivot button should show "Pivot"
     And the table should not be in pivot mode
 
-  @runonly
+#  @runonly
   Scenario: Pivot without data should show error
     When I click the Pivot button
     Then I should see an error notification
-  @runonly
+#  @runonly
   Scenario: Pivot table should have correct structure
     When I click the Convert button
     And I click the Pivot button

@@ -1,0 +1,35 @@
+﻿    @And("each cell should match the expected table for {string}")
+    public void eachCellShouldMatchTheExpectedTableFor(String baseName) throws Exception {
+        Path tablePath = Paths.get("src", "test", "resources", "expected", baseName + ".table.csv");
+
+        //  CSV 라이브러리로 기대값 읽기
+        List<List<String>> expectedRows = new ArrayList<>();
+        try (Reader reader = Files.newBufferedReader(tablePath)) {
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT
+                    .withTrim()
+                    .withIgnoreEmptyLines()
+                    .parse(reader);
+
+            boolean isFirstRow = true;
+            for (CSVRecord record : records) {
+                // 첫 번째 행(헤더)은 건너뛰기
+                if (isFirstRow) {
+                    isFirstRow = false;
+                    continue;
+                }
+                
+                List<String> row = new ArrayList<>();
+                record.forEach(cell -> row.add(cell.trim()));
+                expectedRows.add(row);
+            }
+        }
+
+        waitForElementVisible(PageLocators.TABLE_BODY_ROWS);
+        List<List<String>> actualRows = extractTableBodyRows();
+
+        //  비교 전에 값 정규화
+        normalize(expectedRows);
+        normalize(actualRows);
+
+        assertEquals("Table rows do not match for: " + baseName, expectedRows, actualRows);
+    }

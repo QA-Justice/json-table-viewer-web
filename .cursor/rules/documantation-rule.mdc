@@ -1,0 +1,120 @@
+---
+description:
+
+내가 마크다운으로 정리해달라고하면, 아래 규칙을 따라서 정리해
+
+
+### 1. 기본 규칙
+- 전체 답변은 반드시 하나의 코드펜스(```markdown) 안에 넣어라.  
+- 코드 예제는 네 칸 들여쓰기로만 표현하라.  
+- 문서 최상단에는 YAML 메타데이터 블록을 넣되 tag는 넣지마라.  
+- 인라인 태그는 `#java`, `#cucumber` 같은 형식으로 문서 하단에 넣어라.   
+- 아이콘/이모지를 활용해 시각적으로 강조하라 (✅, ⚠️ 등).  
+- 문서 제목은 최대 `###`까지만 사용하고, `##` 이상의 큰 제목은 쓰지 마라.  
+- **가능한 한 표(table)를 활용하여 개념, 비교, 목록을 구조화하라.**  
+
+---
+
+### 2. HTML 확장 규칙
+마크다운만으로 단일 열 레이아웃만 가능하므로, 필요할 때 **HTML 태그(div, table 등)**을 허용한다.  
+div태그 안에 여러 내용을 넣을 때는 <br> 태그를 활용해라.
+그리고 div태그 안에 **로 bold처리 하지말아라. 
+
+- `<div style="display:flex; gap:20px;">` : 2단 / 3단 분할 레이아웃  
+- `flex:1` : 자동 확장  
+- `width:300px` : 고정 폭 지정  
+- `background`, `padding`, `border-radius` : 카드 스타일 강조  
+- `<table>` : 병렬 표, 비교 구조 작성 시 활용 (📊 핵심 요약·비교는 표로 정리)  
+- `<br>` : 줄바꿈 처리 (마크다운 줄바꿈은 flex 안에서 적용 안 됨)  
+
+#### 색상 팔레트 제한
+- 파랑 계열: `#f0f8ff`  
+- 노랑 계열: `#fffbe6`, `#fff7e6`  
+- 민트 계열: `#e0f7fa`  
+- 오렌지 계열: `#fff3e0`  
+
+#### 아이콘 세트 제한
+- 📍 포인트  
+- ✅ 중요  
+- ⚠️ 주의  
+- 💡 아이디어  
+- 👀 요약 / 📰 상세  
+
+---
+
+### 3. 출력 템플릿 예시
+AI는 아래와 같은 형식을 따라야 한다.
+
+#### 3.1 기본 레이아웃 (div 박스 활용)
+<div style="display: flex; gap: 20px;">
+  <div style="flex: 1; background: #f5f5f5; padding: 10px; border-radius: 10px;">
+    📍 **핵심 요약**  
+    - 중요한 개념  
+    - 공식 정리  
+  </div>
+  <div style="flex: 2; background: #fff7e6; padding: 10px; border-radius: 10px;">
+    📍 **상세 설명**  
+    - 개념 해설  
+    - 코드 예제  
+  </div>
+</div>
+
+---
+
+#### 3.2 표 예시 (단일 표)
+<table border="1" style="width: 100%;">
+  <tr><th>항목</th><th>설명</th><th>비고</th></tr>
+  <tr><td>🍎 사과</td><td>빨강</td><td>과일</td></tr>
+  <tr><td>🍌 바나나</td><td>노랑</td><td>과일</td></tr>
+  <tr><td>🥦 브로콜리</td><td>초록</td><td>채소</td></tr>
+</table>
+
+---
+
+#### 3.3 표 병렬 배치 (div + table)
+<div style="display: flex; gap: 20px;">
+  <div style="flex: 1;">
+    <table border="1" style="width: 100%;">
+      <tr><th>언어</th><th>특징</th></tr>
+      <tr><td>Java</td><td>정적 타이핑, OOP</td></tr>
+      <tr><td>Python</td><td>동적 타이핑, 간결함</td></tr>
+    </table>
+  </div>
+  <div style="flex: 1;">
+    <table border="1" style="width: 100%;">
+      <tr><th>툴</th><th>용도</th></tr>
+      <tr><td>Cucumber</td><td>BDD 테스트</td></tr>
+      <tr><td>Selenium</td><td>UI 자동화</td></tr>
+    </table>
+  </div>
+</div>
+
+---
+
+#### 3.4 고정폭 + 가변폭 조합
+<div style="display: flex; gap: 20px;">
+  <div style="width: 300px; background: #f0f8ff; padding: 10px; border-radius: 10px;">
+    ✅ **왼쪽 (고정 300px)**  
+    - 핵심 요약  
+    - 짧은 메모
+  </div>
+  <div style="flex: 1; background: #fffbe6; padding: 10px; border-radius: 10px;">
+    ✅ **오른쪽 (가변)**  
+    - 상세 설명  
+    - 표, 이미지, 예제 코드
+  </div>
+</div>
+
+---
+
+### ✅ 활용 원칙
+- 항상 **기본 규칙**을 먼저 지켜라.  
+- **가능한 한 표를 활용하여** 개념·비교·목록을 구조화하라.  
+- **HTML 확장 규칙**은 특별히 레이아웃이 필요할 때만 사용하라.  
+- **색상/아이콘**은 위에서 정의한 팔레트와 세트 안에서만 사용하라.  
+- 출력 결과는 반드시 하나의 `markdown` 코드펜스로 감싸라.  
+
+
+globs:
+alwaysApply: true
+---

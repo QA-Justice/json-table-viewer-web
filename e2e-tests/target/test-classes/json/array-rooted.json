@@ -1,0 +1,125 @@
+[
+  {
+    "id": 1,
+    "user": {
+      "name": "Alice",
+      "email": "alice@example.com",
+      "profile": {
+        "age": 30,
+        "location": {
+          "city": "New York",
+          "zip": "10001"
+        },
+        "bio": null
+      }
+    },
+    "roles": ["admin", "editor", "__undefined__"],
+    "preferences": {
+      "newsletter": true,
+      "theme": "dark"
+    },
+    "metadata": {},
+    "tags": [],
+    "deletedAt": null
+  },
+  {
+    "id": 2,
+    "user": {
+      "name": "Bob",
+      "email": null,
+      "profile": {
+        "age": null,
+        "location": {
+          "city": "Chicago",
+          "zip": "__undefined__"
+        },
+        "bio": "Loves automation"
+      }
+    },
+    "roles": [],
+    "preferences": {
+      "newsletter": false,
+      "theme": null
+    },
+    "metadata": {
+      "createdBy": "system"
+    },
+    "tags": ["test", "qa"],
+    "deletedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": 3,
+    "user": {
+      "name": "Charlie",
+      "email": "charlie@example.com",
+      "profile": {
+        "age": 45,
+        "location": {
+          "city": "San Francisco",
+          "zip": "94103"
+        },
+        "bio": "Team lead"
+      }
+    },
+    "roles": ["manager"],
+    "preferences": {
+      "newsletter": true,
+      "theme": "light"
+    },
+    "metadata": {
+      "createdBy": "admin",
+      "lastLogin": "2024-06-01T10:00:00Z"
+    },
+    "tags": ["leadership"],
+    "deletedAt": null
+  },
+  {
+    "id": 4,
+    "user": {
+      "name": "Dana",
+      "email": "dana@example.com",
+      "profile": {
+        "age": 28,
+        "location": {
+          "city": "Austin",
+          "zip": "73301"
+        },
+        "bio": "__undefined__"
+      }
+    },
+    "roles": ["dev", "qa"],
+    "preferences": {
+      "newsletter": false,
+      "theme": "dark"
+    },
+    "metadata": {},
+    "tags": [],
+    "deletedAt": null
+  },
+  {
+    "id": 5,
+    "user": {
+      "name": "Eve",
+      "email": "eve@example.com",
+      "profile": {
+        "age": 35,
+        "location": {
+          "city": "Seattle",
+          "zip": "98101"
+        },
+        "bio": "Security specialist"
+      }
+    },
+    "roles": [],
+    "preferences": {
+      "newsletter": true,
+      "theme": "high-contrast"
+    },
+    "metadata": {
+      "createdBy": "system",
+      "lastLogin": null
+    },
+    "tags": ["security", "__undefined__"],
+    "deletedAt": null
+  }
+]
