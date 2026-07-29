@@ -8,6 +8,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,6 +46,11 @@ public class JsonTableSteps {
     @Given("I open the JSON viewer page")
     public void openJsonViewer() {
         driver.get("https://qa-justice.github.io/json-table-viewer-web/");
+
+        // 앱 초기화(ES 모듈 로드 → 샘플 JSON 주입 → 이벤트 바인딩)가 끝날 때까지 기다린다.
+        // 이걸 안 기다리면 업로드 주입이 바인딩보다 먼저 도착해서 change 이벤트가 버려진다.
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(
+                d -> !d.findElement(By.xpath(PageLocators.JSON_INPUT)).getAttribute("value").trim().isEmpty());
     }
 
 
@@ -108,26 +117,19 @@ public class JsonTableSteps {
     }
 
 
-    @Then("all column names should match the keys in the JSON")
-    public void allColumnNamesShouldMatchTheKeysInTheJSON() {
-    }
-
     @Then("I should see a success notification")
     public void iShouldSeeASuccessNotification() {
-        // 알림이 나타날 때까지 최대 2초 동안 기다림 (알림은 3초 후에 사라짐)
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+        // 성공 알림만 인정한다. 예전에는 성공 알림이 없으면 아무 notification 이나 통과시켰는데,
+        // 에러 알림의 class 도 "notification notification-error" 라서 실패가 통과로 넘어갔다.
         try {
-            // 성공 알림이 표시되는지 확인
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PageLocators.SUCCESS_NOTIFICATION)));
-            assertTrue("Success notification should be visible", true);
+            new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PageLocators.SUCCESS_NOTIFICATION)));
         } catch (TimeoutException e) {
-            // 성공 알림이 없으면 일반적인 notification 요소 확인
-            try {
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PageLocators.NOTIFICATION)));
-                assertTrue("Success notification should be visible", true);
-            } catch (TimeoutException ex) {
-                fail("Success notification should be visible but was not found");
-            }
+            String actual = driver.findElements(By.xpath(PageLocators.NOTIFICATION)).stream()
+                    .map(WebElement::getText)
+                    .collect(Collectors.joining(" / "));
+            fail("Success notification should be visible. Actual notification: "
+                    + (actual.isEmpty() ? "(none)" : actual));
         }
     }
 
@@ -162,17 +164,28 @@ public class JsonTableSteps {
 
     @And("each cell should match the expected table for {string}")
     public void eachCellShouldMatchTheExpectedTableFor(String baseName) throws Exception {
-        // 테이블이 렌더링되었는지 확인
+        Path tablePath = Paths.get("src", "test", "resources", "expected", baseName + ".table.csv");
+
+        // 기대값 파일: 첫 줄은 헤더, 나머지가 데이터 행이다.
+        List<List<String>> expectedRows = new ArrayList<>();
+        try (Reader reader = Files.newBufferedReader(tablePath)) {
+            boolean isHeaderRow = true;
+            for (CSVRecord record : CSVFormat.DEFAULT.parse(reader)) {
+                if (isHeaderRow) {
+                    isHeaderRow = false;
+                    continue;
+                }
+                List<String> row = new ArrayList<>();
+                record.forEach(row::add);
+                expectedRows.add(row);
+            }
+        }
+
         waitForElementVisible(PageLocators.TABLE_BODY_ROWS);
         List<List<String>> actualRows = extractTableBodyRows();
-        
-        // 테이블에 데이터가 있는지 확인
-        assertTrue("Table should have data rows for: " + baseName, !actualRows.isEmpty());
-        
-        // 첫 번째 행에 데이터가 있는지 확인
-        assertTrue("First row should have data for: " + baseName, !actualRows.get(0).isEmpty());
-        
-        System.out.println("Table data for " + baseName + ": " + actualRows.size() + " rows");
+
+        assertEquals("Table rows do not match for: " + baseName,
+                normalize(expectedRows), normalize(actualRows));
     }
 
     // JSON 데이터 입력 관련 step definitions
@@ -254,19 +267,17 @@ public class JsonTableSteps {
 
     @Then("I should see {int} highlighted search results")
     public void i_should_see_highlighted_search_results(Integer expectedCount) {
-        // 검색 결과가 렌더링될 때까지 잠시 대기
+        // 하이라이트 개수가 기대값이 될 때까지 기다린다.
+        // 예전 구현은 size() >= 0 을 단언해서 검색이 통째로 죽어도 통과했다.
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.numberOfElementsToBe(
+                            By.xpath(PageLocators.SEARCH_HIGHLIGHT), expectedCount));
+        } catch (TimeoutException e) {
+            int actual = driver.findElements(By.xpath(PageLocators.SEARCH_HIGHLIGHT)).size();
+            assertEquals("Number of highlighted search results should match",
+                    expectedCount.intValue(), actual);
         }
-        
-        List<WebElement> highlights = driver.findElements(By.xpath(PageLocators.SEARCH_HIGHLIGHT));
-        // 실제 검색 결과가 예상과 다를 수 있으므로, 최소한의 검증만 수행
-        assertTrue("Should have at least some search results", highlights.size() >= 0);
-        
-        // 디버깅을 위해 실제 개수 출력
-        System.out.println("Expected search results: " + expectedCount + ", Actual: " + highlights.size());
     }
 
     @Then("I should see {int} current match highlights")
@@ -277,24 +288,14 @@ public class JsonTableSteps {
 
     @Then("the search count should show {string}")
     public void the_search_count_should_show(String expectedCount) {
-        WebElement searchCount = driver.findElement(By.xpath(PageLocators.SEARCH_COUNT));
-        String actualCount = searchCount.getText();
-        
-        // 검색 카운트가 예상과 다를 수 있으므로, 패턴 매칭으로 검증
-        // 예: "1/1", "2/3" 등의 형식에서 현재 위치가 올바른지 확인
-        if (expectedCount.contains("/")) {
-            String[] expectedParts = expectedCount.split("/");
-            String[] actualParts = actualCount.split("/");
-            
-            if (expectedParts.length >= 1 && actualParts.length >= 1) {
-                assertEquals("Current search position should match", expectedParts[0], actualParts[0]);
-            }
-        } else {
-            assertEquals("Search count should match", expectedCount, actualCount);
+        // "2/3" 을 통째로 비교한다. 예전에는 "/" 앞자리만 봐서 총 개수가 틀려도 통과했다.
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.textToBe(By.xpath(PageLocators.SEARCH_COUNT), expectedCount));
+        } catch (TimeoutException e) {
+            String actual = driver.findElement(By.xpath(PageLocators.SEARCH_COUNT)).getText().trim();
+            assertEquals("Search count should match", expectedCount, actual);
         }
-        
-        // 디버깅을 위해 실제 값 출력
-        System.out.println("Expected search count: " + expectedCount + ", Actual: " + actualCount);
     }
 
     @When("I click the search next button")
@@ -395,29 +396,25 @@ public class JsonTableSteps {
 
     @Then("the table should be in pivot mode")
     public void the_table_should_be_in_pivot_mode() {
-        // Pivot 모드인지 확인하는 로직
-        // 실제 구현에서는 pivot 모드의 특성을 확인해야 함
-        // 예: 테이블 구조가 변경되었거나, 특정 클래스가 추가되었는지 확인
-        
-        // 일단 pivot 버튼이 "Restore"로 변경되었는지 확인 (이미 위에서 확인됨)
-        // 추가로 테이블의 구조나 내용이 변경되었는지 확인할 수 있음
-        
-        // 현재는 pivot 기능이 구현되지 않았을 수 있으므로, 
-        // 최소한의 검증만 수행 (버튼 텍스트 변경 확인)
-        WebElement pivotButton = driver.findElement(By.xpath(PageLocators.PIVOT_BUTTON));
-        String buttonText = pivotButton.getText().replaceAll("[^a-zA-Z0-9\\s]", "").trim();
-        assertTrue("Pivot button should show 'Restore' when in pivot mode", 
-                   buttonText.contains("Restore"));
-        
-        System.out.println("Table is considered to be in pivot mode (button shows: " + buttonText + ")");
+        // 앱은 <table> 이 아니라 #tableContainer 에 'pivoted' 클래스를 붙인다(table-renderer.js).
+        // 예전 구현은 버튼 텍스트만 봐서, 버튼만 바뀌고 표는 그대로인 버그를 잡을 수 없었다.
+        assertTrue("Table container should have the 'pivoted' class", isPivotedContainer());
+
+        List<WebElement> headers = driver.findElements(By.xpath(PageLocators.TABLE_HEADER_TH));
+        assertTrue("Pivoted table should have headers", !headers.isEmpty());
+        assertEquals("First column of a pivoted table should be 'Field'",
+                "Field", headers.get(0).getText().trim());
     }
 
     @Then("the table should not be in pivot mode")
     public void the_table_should_not_be_in_pivot_mode() {
-        // Pivot 모드가 아닌지 확인하는 로직
-        WebElement table = driver.findElement(By.xpath(PageLocators.JSON_TABLE));
-        String classAttribute = table.getAttribute("class");
-        assertTrue("Table should not be in pivot mode", classAttribute == null || !classAttribute.contains("pivot"));
+        assertFalse("Table container should not have the 'pivoted' class", isPivotedContainer());
+    }
+
+    private boolean isPivotedContainer() {
+        WebElement container = driver.findElement(By.xpath(PageLocators.TABLE_CONTAINER));
+        String classAttribute = container.getAttribute("class");
+        return classAttribute != null && classAttribute.contains("pivoted");
     }
 
     // 키보드 단축키 관련 step definitions
@@ -441,6 +438,10 @@ public class JsonTableSteps {
             cleaned.add(cell.trim().replaceAll("\\s+", " "));
         }
         return cleaned;
+    }
+
+    private List<List<String>> normalize(List<List<String>> rows) {
+        return rows.stream().map(this::normalizeRow).collect(Collectors.toList());
     }
 
     @Then("all column names should match the expected headers for {string}")

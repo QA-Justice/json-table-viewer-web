@@ -1,18 +1,18 @@
 Feature: JSON validation and error handling
 Background:
   Given I open the JSON viewer page
-#  @runonly
+  @runonly
   Scenario: Convert invalid JSON should show error
     When I enter invalid JSON data
     And I click the Convert button
     Then I should see a JSON parse error
-#  @runonly
+  @runonly
   Scenario: Convert empty JSON should show error
     When I clear the JSON input
     And I click the Convert button
     Then I should see an error notification
 
-#  @runonly
+  @runonly
   Scenario: Reset to sample data
     When I clear the JSON input
     And I click the Reset button
