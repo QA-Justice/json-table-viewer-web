@@ -11,6 +11,7 @@ public class PageLocators {
     
     // 입력 필드들
     public static final String JSON_INPUT = "//textarea[@id='jsonInput']";
+    public static final String LINE_NUMBERS = "//div[@id='lineNumbers']";
     public static final String FILE_INPUT = "//input[@id='jsonFileInput']";
     
     // 테이블 관련
@@ -44,5 +45,4 @@ public class PageLocators {
     public static final String SEARCH_HIGHLIGHT = "//mark[contains(@class, 'search-highlight')]";
     public static final String CURRENT_MATCH = "//mark[contains(@class, 'current-match')]";
 }
-
 

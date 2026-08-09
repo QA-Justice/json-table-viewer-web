@@ -28,6 +28,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class JsonTableSteps {
 
+    private static final String DEFAULT_BASE_URL = "https://qa-justice.github.io/json-table-viewer-web/";
     WebDriver driver;
 
     @Before
@@ -45,7 +46,11 @@ public class JsonTableSteps {
 
     @Given("I open the JSON viewer page")
     public void openJsonViewer() {
-        driver.get("https://qa-justice.github.io/json-table-viewer-web/");
+        String baseUrl = System.getProperty("json.viewer.baseUrl");
+        if (baseUrl == null || baseUrl.isBlank()) {
+            baseUrl = System.getenv("JSON_VIEWER_BASE_URL");
+        }
+        driver.get(baseUrl == null || baseUrl.isBlank() ? DEFAULT_BASE_URL : baseUrl);
 
         // 앱 초기화(ES 모듈 로드 → 샘플 JSON 주입 → 이벤트 바인딩)가 끝날 때까지 기다린다.
         // 이걸 안 기다리면 업로드 주입이 바인딩보다 먼저 도착해서 change 이벤트가 버려진다.
@@ -201,6 +206,26 @@ public class JsonTableSteps {
         WebElement jsonInput = driver.findElement(By.xpath(PageLocators.JSON_INPUT));
         jsonInput.clear();
         jsonInput.sendKeys("{ invalid json data }");
+    }
+
+    @Then("the line-number gutter should show {string}")
+    public void the_line_number_gutter_should_show(String expectedLines) {
+        WebElement lineNumbers = driver.findElement(By.xpath(PageLocators.LINE_NUMBERS));
+        String actualLines = lineNumbers.getAttribute("textContent").trim().replaceAll("\\s+", " ");
+        assertEquals("Line-number gutter should match the JSON input", expectedLines, actualLines);
+    }
+
+    @Then("the JSON error position should be selected")
+    public void the_json_error_position_should_be_selected() {
+        WebElement jsonInput = driver.findElement(By.xpath(PageLocators.JSON_INPUT));
+        WebElement activeElement = driver.switchTo().activeElement();
+        assertEquals("JSON input should receive focus after a parse error", jsonInput, activeElement);
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        long selectionStart = ((Number) js.executeScript("return arguments[0].selectionStart;", jsonInput)).longValue();
+        long selectionEnd = ((Number) js.executeScript("return arguments[0].selectionEnd;", jsonInput)).longValue();
+        assertTrue("The selected error position should not be the first character", selectionStart > 0);
+        assertEquals("Exactly one invalid character should be selected", selectionStart + 1, selectionEnd);
     }
 
     @When("I clear the JSON input")
@@ -372,6 +397,9 @@ public class JsonTableSteps {
     // Reset 기능 관련 step definitions
     @When("I click the Reset button")
     public void i_click_the_reset_button() {
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(d ->
+                d.findElements(By.xpath(PageLocators.NOTIFICATION)).stream()
+                        .noneMatch(WebElement::isDisplayed));
         WebElement resetButton = driver.findElement(By.xpath(PageLocators.RESET_BUTTON));
         resetButton.click();
     }

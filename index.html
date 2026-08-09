@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-    <link rel="stylesheet" href="style-improved.css?v=studioblank1">
+    <link rel="stylesheet" href="style-improved.css?v=studioblank-line-numbers">
     <link rel="icon" type="image/png" href="./favicon-star.png">
 </head>
 <body>
@@ -24,12 +24,16 @@
     <div class="input-section">
       <div class="textarea-container">
         <button id="resetBtn" class="reset-btn" title="Reset to sample JSON">↺ Reset</button>
-        <textarea 
-          id="jsonInput" 
-          placeholder="Paste your JSON data here."
-          rows="12"
-          spellcheck="false"
-        ></textarea>
+        <div class="editor">
+          <div class="line-numbers" id="lineNumbers" aria-hidden="true">1</div>
+          <textarea
+            id="jsonInput"
+            placeholder="Paste your JSON data here."
+            rows="12"
+            spellcheck="false"
+            wrap="off"
+          ></textarea>
+        </div>
       </div>
       <div class="button-container">
         <input type="file" id="jsonFileInput" accept=".json,application/json" style="display:none;" />
@@ -69,4 +73,4 @@
   <!-- Script -->
   <script type="module" src="./js/script-improved.js"></script>
   <script src="./js/search-content.js"></script>
-</html> 
+</html>

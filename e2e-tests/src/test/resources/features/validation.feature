@@ -6,6 +6,28 @@ Background:
     When I enter invalid JSON data
     And I click the Convert button
     Then I should see a JSON parse error
+
+  @runonly
+  Scenario: Line-number gutter follows multiline JSON input
+    When I enter JSON data:
+      """
+      {
+        "name": "Test"
+      }
+      """
+    Then the line-number gutter should show "1 2 3"
+
+  @runonly
+  Scenario: Parse error focuses and selects the invalid character
+    When I enter JSON data:
+      """
+      {
+        "name": "Test",
+      }
+      """
+    And I click the Convert button
+    Then I should see a JSON parse error
+    And the JSON error position should be selected
   @runonly
   Scenario: Convert empty JSON should show error
     When I clear the JSON input
