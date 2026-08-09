@@ -290,9 +290,10 @@ textarea::placeholder { color: var(--muted-soft); }
   padding: var(--space-3) var(--space-3);
   text-align: left;
   font-weight: 600;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 13px;
+  /* No text-transform: headers are real JSON keys; preserve their case
+     (also keeps getText() case-exact for the e2e suite). */
+  letter-spacing: 0.02em;
   white-space: nowrap;
   position: sticky;
   top: 0;
