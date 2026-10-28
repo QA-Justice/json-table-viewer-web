@@ -559,6 +559,47 @@ public class JsonTableSteps {
         assertFalse("Table container should not have the 'pivoted' class", isPivotedContainer());
     }
 
+    // 화면에서 보이도록 표 영역까지 내려간 뒤, 표 안을 부드럽게 끝까지 스크롤한다
+    @When("I scroll to the bottom of the table")
+    public void i_scroll_to_the_bottom_of_the_table() {
+        WebElement container = driver.findElement(By.xpath(PageLocators.TABLE_CONTAINER));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'start', behavior: 'smooth'});", container);
+        js.executeScript("arguments[0].scrollTo({top: arguments[0].scrollHeight, behavior: 'smooth'});", container);
+
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(d -> (Boolean) js.executeScript(
+                "const c = arguments[0]; return c.scrollTop > 0 && c.scrollTop + c.clientHeight >= c.scrollHeight - 1;",
+                container));
+    }
+
+    @Then("the last table row should show {string}")
+    public void the_last_table_row_should_show(String expectedFirstCell) {
+        List<WebElement> rows = driver.findElements(By.xpath(PageLocators.TABLE_BODY_ROWS));
+        assertFalse("Table should have rows", rows.isEmpty());
+        WebElement lastRow = rows.get(rows.size() - 1);
+        assertEquals("Last row's first cell should match", expectedFirstCell,
+                lastRow.findElement(By.xpath("./td[1]")).getText().trim());
+
+        WebElement container = driver.findElement(By.xpath(PageLocators.TABLE_CONTAINER));
+        Boolean visible = (Boolean) ((JavascriptExecutor) driver).executeScript(
+                "const r = arguments[0].getBoundingClientRect(), c = arguments[1].getBoundingClientRect();"
+                        + "return r.top >= c.top && r.bottom <= c.bottom + 1;",
+                lastRow, container);
+        assertTrue("Last row should be visible inside the table area after scrolling", visible);
+    }
+
+    // 고정(sticky) 헤더가 스크롤 후에도 표 영역의 맨 위에 붙어 있는지 위치로 확인한다
+    @Then("the table header should stay at the top of the table")
+    public void the_table_header_should_stay_at_the_top_of_the_table() {
+        WebElement container = driver.findElement(By.xpath(PageLocators.TABLE_CONTAINER));
+        WebElement firstHeader = driver.findElement(By.xpath(PageLocators.TABLE_HEADER_TH));
+        Number gap = (Number) ((JavascriptExecutor) driver).executeScript(
+                "return arguments[0].getBoundingClientRect().top - arguments[1].getBoundingClientRect().top;",
+                firstHeader, container);
+        assertTrue("Header should be stuck to the top of the table area, but was " + gap + "px below it",
+                Math.abs(gap.doubleValue()) <= 2);
+    }
+
     private boolean isPivotedContainer() {
         WebElement container = driver.findElement(By.xpath(PageLocators.TABLE_CONTAINER));
         String classAttribute = container.getAttribute("class");
