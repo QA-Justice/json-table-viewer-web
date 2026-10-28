@@ -1,8 +1,7 @@
-﻿Feature: JSON convert to table
+Feature: JSON convert to table
 Background:
   Given I open the JSON viewer page
 
-  @runonly
   Scenario: A correct table should be rendered when sample.json is converted
     When I click the Convert button
     Then I should see a success notification
@@ -12,7 +11,6 @@ Background:
       | John Doe | 30 | john@example.com | true | 85 | 92 | 78 | 123 Main St | New York | 10001 |
       | Jane Smith | 25 | jane@example.com | false | 90 | 88 | 95 | 456 Oak Ave | Los Angeles | 90210 |
       | Bob Johnson | 35 | bob@example.com | true | 75 | 82 | 88 | 789 Pine Rd | Chicago | 60601 |
- @runonly
   Scenario: Convert with custom JSON data
     When I enter JSON data:
       """
@@ -29,7 +27,6 @@ Background:
       | 1 | Alice | true |
       | 2 | Bob | false |
 
-@runonly
   Scenario Outline: Convert JSON files correctly
     When I import the file "<jsonFile>"
     And I click the Convert button

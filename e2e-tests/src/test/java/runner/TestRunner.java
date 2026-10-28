@@ -9,7 +9,7 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "steps",
-        tags = "@runonly",
+        // 태그 필터 없이 모든 시나리오를 돌린다. 일부만 돌리려면 -Dcucumber.filter.tags="..." 를 쓴다
         plugin = {"pretty",
                 "summary",
                 "html:target/cucumber-report.html",

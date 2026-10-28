@@ -5,21 +5,29 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
+import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 import locators.PageLocators ;
@@ -30,17 +38,34 @@ public class JsonTableSteps {
 
     private static final String DEFAULT_BASE_URL = "https://qa-justice.github.io/json-table-viewer-web/";
     WebDriver driver;
+    // CSV 다운로드 내용을 검증하려고 시나리오마다 빈 임시 폴더로 다운로드 위치를 지정한다
+    Path downloadDir;
 
     @Before
-    public void setup() {
-        driver = new ChromeDriver();
+    public void setup() throws IOException {
+        downloadDir = Files.createTempDirectory("json-viewer-downloads");
+
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("download.default_directory", downloadDir.toString());
+        prefs.put("download.prompt_for_download", false);
+        ChromeOptions options = new ChromeOptions();
+        options.setExperimentalOption("prefs", prefs);
+
+        driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
     @After //시나리오 종료 후 실행
-    public void teardown() {
+    public void teardown() throws IOException {
         if (driver != null) {
             driver.quit(); //브라우저 세션 종료
+        }
+        if (downloadDir != null) {
+            try (Stream<Path> paths = Files.walk(downloadDir)) {
+                for (Path p : paths.sorted(Comparator.reverseOrder()).collect(Collectors.toList())) {
+                    Files.deleteIfExists(p);
+                }
+            }
         }
     }
 
@@ -160,11 +185,31 @@ public class JsonTableSteps {
         }
     }
 
-    @Then("I should see an error notification")
-    public void iShouldSeeAnErrorNotification() {
-        waitForElementVisible(PageLocators.ERROR_NOTIFICATION);
-        WebElement notification = driver.findElement(By.xpath(PageLocators.ERROR_NOTIFICATION));
-        assertTrue("Error notification should be visible", notification.isDisplayed());
+    // 에러 알림이 "떴는지"만 보면 엉뚱한 이유의 에러도 통과하므로 메시지까지 확인한다
+    @Then("I should see the error {string}")
+    public void iShouldSeeTheError(String expectedMessage) {
+        assertEquals("Error notification message should match", expectedMessage, errorNotificationText());
+    }
+
+    // 브라우저마다 JSON.parse 오류 문구가 달라서, 고정된 앞부분만 확인할 때 쓴다
+    @Then("I should see an error containing {string}")
+    public void iShouldSeeAnErrorContaining(String expectedPart) {
+        String actual = errorNotificationText();
+        assertTrue("Error notification should contain '" + expectedPart + "' but was: " + actual,
+                actual.contains(expectedPart));
+    }
+
+    private String errorNotificationText() {
+        try {
+            waitForElementVisible(PageLocators.ERROR_NOTIFICATION);
+        } catch (TimeoutException e) {
+            String actual = driver.findElements(By.xpath(PageLocators.NOTIFICATION)).stream()
+                    .map(WebElement::getText)
+                    .collect(Collectors.joining(" / "));
+            fail("Error notification should be visible. Actual notification: "
+                    + (actual.isEmpty() ? "(none)" : actual));
+        }
+        return driver.findElement(By.xpath(PageLocators.ERROR_NOTIFICATION)).getText().trim();
     }
 
     @And("each cell should match the expected table for {string}")
@@ -252,11 +297,86 @@ public class JsonTableSteps {
         }
     }
 
+    // 성공 알림만으로는 복사된 내용이 맞는지 알 수 없어서, 클립보드를 실제로 읽어 비교한다
+    @Then("the clipboard should contain:")
+    public void the_clipboard_should_contain(String expected) {
+        iShouldSeeASuccessNotification();
+        assertEquals("Clipboard content should match", normalizeNewlines(expected), normalizeNewlines(readClipboard()));
+    }
+
+    @Then("the clipboard should contain tab-separated rows:")
+    public void the_clipboard_should_contain_tab_separated_rows(DataTable dataTable) {
+        String expected = dataTable.asLists().stream()
+                .map(row -> String.join("\t", normalizeRow(row)))
+                .collect(Collectors.joining("\n"));
+        iShouldSeeASuccessNotification();
+        assertEquals("Clipboard content should match", expected, normalizeNewlines(readClipboard()));
+    }
+
+    // 클립보드 API는 권한이 필요해서, 임시 textarea에 실제로 Ctrl+V 해서 읽는다 (사용자가 붙여넣는 것과 같은 경로)
+    private String readClipboard() {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebElement probe = (WebElement) js.executeScript(
+                "const t = document.createElement('textarea');"
+                        + "t.id = 'clipboard-probe';"
+                        + "t.style.position = 'fixed'; t.style.top = '0'; t.style.left = '0';"
+                        + "document.body.appendChild(t); t.focus(); return t;");
+        probe.sendKeys(Keys.chord(Keys.CONTROL, "v"));
+        String text = probe.getAttribute("value");
+        js.executeScript("arguments[0].remove();", probe);
+        return text;
+    }
+
+    private String normalizeNewlines(String text) {
+        return text == null ? "" : text.replace("\r\n", "\n").replace('\r', '\n').strip();
+    }
+
     // Export 기능 관련 step definitions
     @When("I click the Export CSV button")
     public void i_click_the_export_csv_button() {
         WebElement exportButton = driver.findElement(By.xpath(PageLocators.EXPORT_BUTTON));
         exportButton.click();
+    }
+
+    // 다운로드된 CSV 파일을 열어 내용(첫 줄 헤더 포함)을 비교한다
+    @Then("the downloaded CSV should be:")
+    public void the_downloaded_csv_should_be(DataTable dataTable) throws IOException {
+        Path csvFile = waitForDownloadedCsv();
+        assertTrue("CSV file name should be json-table-YYYY-MM-DD.csv, was " + csvFile.getFileName(),
+                csvFile.getFileName().toString().matches("json-table-\\d{4}-\\d{2}-\\d{2}\\.csv"));
+
+        byte[] bytes = Files.readAllBytes(csvFile);
+        assertTrue("CSV should start with a UTF-8 BOM so Excel reads it correctly",
+                bytes.length >= 3 && (bytes[0] & 0xFF) == 0xEF && (bytes[1] & 0xFF) == 0xBB && (bytes[2] & 0xFF) == 0xBF);
+        String content = new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
+
+        List<List<String>> actualRows = new ArrayList<>();
+        for (CSVRecord record : CSVFormat.DEFAULT.parse(new StringReader(content))) {
+            List<String> row = new ArrayList<>();
+            record.forEach(row::add);
+            actualRows.add(row);
+        }
+
+        List<List<String>> expectedRows = dataTable.asLists().stream()
+                .map(this::normalizeRow)
+                .collect(Collectors.toList());
+        assertEquals("Downloaded CSV content should match", expectedRows, actualRows);
+    }
+
+    // 크롬은 .crdownload 로 받다가 완료되면 이름을 바꾸므로, .csv 가 생기면 다운로드가 끝난 것이다
+    private Path waitForDownloadedCsv() {
+        try {
+            return new WebDriverWait(driver, Duration.ofSeconds(10)).until(d -> {
+                try (Stream<Path> files = Files.list(downloadDir)) {
+                    return files.filter(p -> p.getFileName().toString().endsWith(".csv")).findFirst().orElse(null);
+                } catch (IOException e) {
+                    return null;
+                }
+            });
+        } catch (TimeoutException e) {
+            fail("No CSV file was downloaded to " + downloadDir);
+            return null;
+        }
     }
 
     // Search 기능 관련 step definitions
@@ -452,18 +572,11 @@ public class JsonTableSteps {
         jsonInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ENTER));
     }
 
-    // JSON 파싱 에러 관련 step definitions
-    @Then("I should see a JSON parse error")
-    public void i_should_see_a_json_parse_error() {
-        waitForElementVisible(PageLocators.ERROR_NOTIFICATION);
-        WebElement errorNotification = driver.findElement(By.xpath(PageLocators.ERROR_NOTIFICATION));
-        assertTrue("JSON parse error should be visible", errorNotification.isDisplayed());
-    }
-
     private List<String> normalizeRow(List<String> rawRow) {
         List<String> cleaned = new ArrayList<>();
         for (String cell : rawRow) {
-            cleaned.add(cell.trim().replaceAll("\\s+", " "));
+            // Cucumber DataTable 은 빈 칸을 null 로 준다
+            cleaned.add(cell == null ? "" : cell.trim().replaceAll("\\s+", " "));
         }
         return cleaned;
     }
