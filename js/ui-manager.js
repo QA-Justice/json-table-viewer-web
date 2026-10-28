@@ -16,6 +16,30 @@ export class UIManager {
     this.bindFileUpload();
     this.bindGlobalEvents();
     this.initLineNumbers();
+    this.bindPageLevelPaste();
+  }
+
+  // 페이지 어디서든 붙여넣기
+  // 입력창이 아닌 곳(빈 화면 등)에 포커스가 있을 때 Ctrl+V 하면 아무 일도 일어나지 않았다.
+  // 그런 붙여넣기는 입력창 내용으로 받아 바로 변환한다. 다른 입력요소에서의 붙여넣기는 건드리지 않는다.
+  bindPageLevelPaste() {
+    document.addEventListener('paste', (e) => {
+      const target = e.target;
+      const inEditable = target && target.closest &&
+        target.closest('input, textarea, [contenteditable=""], [contenteditable="true"]');
+      if (inEditable) return;
+
+      const text = e.clipboardData ? e.clipboardData.getData('text') : '';
+      if (!text.trim()) return;
+
+      e.preventDefault();
+      DOMUtils.safeDOMOperation('#jsonInput', (jsonInput) => {
+        jsonInput.value = text;
+        jsonInput.focus();
+        if (this.renderLineNumbers) this.renderLineNumbers();
+        this.handleConvert();
+      });
+    });
   }
 
   // 편집기 줄 번호 거터 — 입력/스크롤에 맞춰 갱신·동기화
